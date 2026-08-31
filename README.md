@@ -55,7 +55,7 @@ can react.
 ## Install
 
 ```bash
-git clone https://github.com/<user>/barrier-sizing.git
+git clone https://github.com/maxsilverman9/barrier-sizing.git
 cd barrier-sizing
 pip install -r requirements.txt
 ```
