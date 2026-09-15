@@ -22,7 +22,7 @@ def fig1_family():
     for g,ls in [(0.5,":"),(1.0,"-"),(1.2,"-"),(2.0,"--"),(5.0,"-.")]:
         lw=1.9 if g in (1.0,1.2) else 1.2
         ax.plot(D/C, core.u_power(D,C,g), ls, lw=lw,
-                label=rf"$\gamma={g:g}$"+(" (Grossman–Zhou)" if g==1.0 else ""))
+                label=rf"$\kappa={g:g}$"+(" (Grossman–Zhou)" if g==1.0 else ""))
     ax.plot(D/C, core.u_cppi(D,C), color="0.45", lw=1.0,
             label="CPPI")
     ax.set_xlabel(r"drawdown as fraction of barrier,  $D/C$")
@@ -94,7 +94,7 @@ def fig3_absorbing():
             u=core.u_power(np.array([D]),C,g)[0]
             Ws.append(W); us.append(u)
             W=W*(1+u*r[t]); peak=max(peak,W)
-        a1.plot(Ws,col,ls=ls,lw=1.5,label=rf"$\gamma={g:g}$")
+        a1.plot(Ws,col,ls=ls,lw=1.5,label=rf"$\kappa={g:g}$")
         a2.plot(us,col,ls=ls,lw=1.5)
     bh=np.cumprod(1+r)
     a1.plot(bh,color="0.6",lw=1.0,ls=":",label="uncontrolled")
@@ -131,7 +131,7 @@ def fig4_realdata():
             u=core.u_power(np.array([D]),C,g)[0]
             Ws.append(W); DDs.append(D)
             W=W*(1+u*strat[0,t]); peak=max(peak,W)
-        lbl=rf"$\gamma={g:g}$"+(" (halts)" if g==0.75 else "")
+        lbl=rf"$\kappa={g:g}$"+(" (halts)" if g==0.75 else "")
         a1.plot(idx,Ws,col,lw=1.3,label=lbl)
         a2.plot(idx,np.array(DDs)*100,col,lw=1.0)
     unc=np.cumprod(1+strat[0])
@@ -147,4 +147,10 @@ def fig4_realdata():
     print("fig4 done")
 
 if __name__=="__main__":
+    import shutil
     fig1_family(); fig2_boundary(); fig3_absorbing(); fig4_realdata()
+    SUB=os.path.join(os.path.dirname(__file__),"..","submission")
+    for n,dst in [("fig1_family","Figure1"),("fig2_boundary","Figure2"),
+                  ("fig3_absorbing","Figure3"),("fig4_realdata","Figure4")]:
+        shutil.copyfile(f"{FIG}/{n}.png", f"{SUB}/{dst}.png")
+        print(f"copied {n}.png -> submission/{dst}.png")
